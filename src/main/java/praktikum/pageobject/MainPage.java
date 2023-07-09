@@ -1,6 +1,7 @@
 package praktikum.pageobject;
 
 import io.qameta.allure.Step;
+import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,20 +9,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+
 public class MainPage {
     private final WebDriver driver;
-    private final By personalAccountButton = By.xpath("/html/body/div/div/header/nav/a/p"); // проверен
-    private final By logInYourAccountButton = By.xpath("//button[contains(text(),'Войти в аккаунт')]"); // проверен
-    private final By orderFeedButton = By.xpath("//p[contains(text(),'Лента Заказов')]"); // проверен
-    private final By constructorLink = By.xpath("//*[text()='Конструктор']"); // проверен
-    private final By bunButton = By.xpath("//span[contains(text(),'Булки')]"); // проверен
-    private final By sauceButton = By.xpath("//span[contains(text(),'Соусы')]"); // проверен
-    private final By fillingButton = By.xpath("//span[contains(text(),'Начинки')]"); // проверен
-    private final By designerText =By.xpath("//*[text()='Соберите бургер']"); // проверен
-    private final By bunHeaderText = By.xpath("//h2[contains(text(),'Булки')]"); // проверен
-    private final By sauceHeaderText = By.xpath("//h2[contains(text(),'Соусы')]"); // проверен
-    private final By fillingHeaderText = By.xpath("//h2[contains(text(),'Начинки')]"); // проверен
-
+    private final By personalAccountButton = By.xpath(".//p[text()='Личный Кабинет']");
+    private final By logInYourAccountButton = By.xpath("//button[contains(text(),'Войти в аккаунт')]");
+    private final By orderFeedButton = By.xpath("//p[contains(text(),'Лента Заказов')]");
+    private final By constructorLink = By.xpath("//*[text()='Конструктор']");
+    private final By bunButton = By.xpath("//span[text()='Булки']//parent::div");
+    private final By sauceButton = By.xpath("//span[text()='Соусы']//parent::div");
+    private final By fillingButton = By.xpath("//span[text()='Начинки']//parent::div");
+    private final By designerText =By.xpath("//*[text()='Соберите бургер']");
+    private final String ATTRIBUTE_IF_TAB_SELECTED = "tab_tab_type_current";
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
@@ -35,16 +36,6 @@ public class MainPage {
     @Step("Нажать на кнопку 'Войти в аккаунт'")
     public void clickLogInYourAccountButton(){
         driver.findElement(logInYourAccountButton).click();
-    }
-
-    @Step("Нажать на кнопку 'Лента заказов'")
-    public void clickOrderFeedButton(){
-        driver.findElement(orderFeedButton).click();
-    }
-
-    @Step("Нажать на кнопку 'Конструктор'")
-    public void clickConstructorLink(){
-        driver.findElement(constructorLink).click();
     }
 
     @Step("Нажать на таб 'Булки'")
@@ -67,22 +58,49 @@ public class MainPage {
         return driver.findElement(designerText).getText();
     }
 
-    @Step("Получить текст 'Булки'")
-    public String getBunText(){
-        return driver.findElement(bunHeaderText).getText();
-    }
-    @Step("Получить текст 'Соусы'")
-    public String getSauceText(){
-        return driver.findElement(sauceHeaderText).getText();
+
+    // вынесены методы получения элемента, если селект выбран, и проверки, что в локаторе есть "tab_tab_type_current"
+   @Step("Проверка, что у текущего элемента 'Булки' есть в локаторе атрибут 'tab_tab_type_current'")
+    public void getAndCheckAttributeValueIfTabBunsSelected() {
+       MatcherAssert.assertThat(driver.findElement(bunButton)
+               .getAttribute("class"),containsString(ATTRIBUTE_IF_TAB_SELECTED));
+   }
+
+    @Step("Проверка, что у текущего элемента 'Соусы' есть в локаторе атрибут 'tab_tab_type_current'")
+    public void getAndCheckAttributeValueIfTabSauceSelected() {
+        MatcherAssert.assertThat(driver.findElement(sauceButton)
+                .getAttribute("class"),containsString(ATTRIBUTE_IF_TAB_SELECTED));
     }
 
-    @Step("Получить текст 'Начинки'")
-    public String getFillingText(){
-        return driver.findElement(fillingHeaderText).getText();
+    @Step("Проверка, что у текущего элемента 'Начинки' есть в локаторе атрибут 'tab_tab_type_current'")
+    public void getAndCheckAttributeValueIfTabFillingsSelected() {
+        MatcherAssert.assertThat(driver.findElement(fillingButton)
+                .getAttribute("class"),containsString(ATTRIBUTE_IF_TAB_SELECTED));
     }
+
+   // добавила методы для проверки, что таб не выбран
+   @Step("Проверка, что таб 'Булки' не выбран")
+   public void checkBunIsNotSelected() {
+       MatcherAssert.assertThat(driver.findElement(bunButton)
+               .getAttribute("class"), not(containsString(ATTRIBUTE_IF_TAB_SELECTED)));
+   }
+
+    @Step("Проверка, что таб 'Соусы' не выбран")
+    public void checkSauceIsNotSelected() {
+        MatcherAssert.assertThat(driver.findElement(sauceButton)
+                .getAttribute("class"), not(containsString(ATTRIBUTE_IF_TAB_SELECTED)));
+    }
+
+    @Step("Проверка, что таб 'Начинки' не выбран")
+    public void checkFillingIsNotSelected() {
+        MatcherAssert.assertThat(driver.findElement(fillingButton)
+                .getAttribute("class"), not(containsString(ATTRIBUTE_IF_TAB_SELECTED)));
+    }
+
 
     @Step("Ожидание кнопки 'Личный Кабинет'")
     public void expectationPersonalAccount(){
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(personalAccountButton));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions
+                .elementToBeClickable(personalAccountButton));
     }
 }

@@ -10,12 +10,12 @@ import java.time.Duration;
 public class LoginPage {
     private WebDriver driver;
 
-    private final By inputEmail = By.xpath("//label[contains(text(),'Email')]/../input"); // проверен
-    private final By inputPassword = By.xpath("//input[@type='password']"); // проверен
-    private final By enterButton = By.xpath("//*[text()='Войти']"); // проверен
-    private final By registerButton = By.xpath("//*[text()='Зарегистрироваться']"); // проверен
-    private final By forgotPasswordButton = By.xpath("/html/body/div[1]/div/main/div/div/p[2]/a"); // проверен
-    private final By enterGetText = By.xpath("//h2[contains(text(),'Вход')]"); // проверен
+    private final By inputEmail = By.xpath("//label[contains(text(),'Email')]/../input");
+    private final By inputPassword = By.xpath("//input[@type='password']");
+    private final By enterButton = By.xpath("//*[text()='Войти']");
+    private final By registerButton = By.xpath("//*[text()='Зарегистрироваться']");
+    private final By forgotPasswordButton = By.xpath("//*[text()='Восстановить пароль']"); // исправлен
+    private final By enterGetText = By.xpath("//h2[contains(text(),'Вход')]");
 
 
     public LoginPage(WebDriver driver) {

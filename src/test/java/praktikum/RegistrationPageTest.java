@@ -12,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import praktikum.data.BaseData;
 import praktikum.pageobject.MainPage;
 import praktikum.pageobject.LoginPage;
-;
 import praktikum.pageobject.RegistrationPage;
 import praktikum.user.UserGenerator;
 

@@ -16,8 +16,11 @@ import java.time.Duration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static praktikum.data.BaseData.EMAIL_TEST;
+import static praktikum.data.BaseData.PASSWORD_TEST;
 
 public class LoginPageTest {
+    public static final String VALID_PROFILE = "Профиль";
     private WebDriver driver;
     MainPage objMainPage;
     RegistrationPage objRegistrationPage;
@@ -33,7 +36,6 @@ public class LoginPageTest {
         driver = new ChromeDriver(options);
         driver.navigate().to(BaseData.BASE_URL);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WebDriverConfig.WAIT_SECONDS_TIMEOUT));
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         objMainPage = new MainPage(driver);
         objloginPage = new LoginPage(driver);
         objRegistrationPage = new RegistrationPage(driver);
@@ -45,11 +47,11 @@ public class LoginPageTest {
     @DisplayName("Проверка входа по кнопке 'Войти в аккаунт' на главной странице")
     public void loginHomePageTest() {
         objMainPage.clickLogInYourAccountButton();
-        objloginPage.login("test0202@yandex.ru", "012345");
+        objloginPage.login(EMAIL_TEST, PASSWORD_TEST);
         objMainPage.clickPersonalAccountButton();
         objProfilePage.expectationAccountButton();
         String newAccountLinkText = objProfilePage.getAccountLinkText();
-        assertThat(newAccountLinkText, is("Профиль"));
+        assertThat(newAccountLinkText, is(VALID_PROFILE));
     }
 
     @Test
@@ -57,12 +59,12 @@ public class LoginPageTest {
     public void accountButtonLoginTest() {
         objMainPage.expectationPersonalAccount();
         objMainPage.clickPersonalAccountButton();
-        objloginPage.login("test0202@yandex.ru", "012345");
+        objloginPage.login(EMAIL_TEST, PASSWORD_TEST);
         objMainPage.expectationPersonalAccount();
         objMainPage.clickPersonalAccountButton();
         objProfilePage.expectationAccountButton();
         String newAccountLinkText = objProfilePage.getAccountLinkText();
-        assertThat(newAccountLinkText, is("Профиль"));
+        assertThat(newAccountLinkText, is(VALID_PROFILE));
     }
 
     @Test
@@ -72,12 +74,12 @@ public class LoginPageTest {
         objMainPage.clickLogInYourAccountButton();
         objloginPage.clickRegisterButton();
         objRegistrationPage.clickLoginButton();
-        objloginPage.login("test0202@yandex.ru", "012345");
+        objloginPage.login(EMAIL_TEST, PASSWORD_TEST);
         objMainPage.expectationPersonalAccount();
         objMainPage.clickPersonalAccountButton();
         objProfilePage.expectationAccountButton();
         String newAccountLinkText = objProfilePage.getAccountLinkText();
-        assertThat(newAccountLinkText, is("Профиль"));
+        assertThat(newAccountLinkText, is(VALID_PROFILE));
     }
 
     @Test
@@ -87,12 +89,12 @@ public class LoginPageTest {
         objMainPage.clickPersonalAccountButton();
         objloginPage.clickForgotPasswordButton();
         objRecoveryPage.clickEnterButton();
-        objloginPage.login("teste@example.com", "123422");
+        objloginPage.login(EMAIL_TEST, PASSWORD_TEST);
         objMainPage.expectationPersonalAccount();
         objMainPage.clickPersonalAccountButton();
         objProfilePage.expectationAccountButton();
         String newAccountLinkText = objProfilePage.getAccountLinkText();
-        assertThat(newAccountLinkText, is("Профиль"));
+        assertThat(newAccountLinkText, is(VALID_PROFILE));
     }
 
     @After

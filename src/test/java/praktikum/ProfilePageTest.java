@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import praktikum.data.BaseData;
+import praktikum.data.WebDriverConfig;
 import praktikum.pageobject.MainPage;
 import praktikum.pageobject.LoginPage;
 import praktikum.pageobject.ProfilePage;
@@ -32,7 +33,7 @@ public class ProfilePageTest {
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
         driver.navigate().to(BaseData.BASE_URL);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WebDriverConfig.WAIT_SECONDS_TIMEOUT));
         objMainPage = new MainPage(driver);
         objMainPage.clickLogInYourAccountButton();
         objloginPage = new LoginPage(driver);

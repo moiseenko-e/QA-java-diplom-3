@@ -9,10 +9,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import praktikum.data.BaseData;
+import praktikum.data.WebDriverConfig;
 import praktikum.pageobject.MainPage;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.time.Duration;
 
 public class MainPageTests {
     private WebDriver driver;
@@ -29,28 +29,31 @@ public class MainPageTests {
     }
 
     @Test
-    @DisplayName("Таб 'Булки'")
-    public void bunTest() {
-        objHomePage.clickFillingButton();
+    @DisplayName("Проверка перехода в раздел 'Булки'")
+    public void bunSelectedTest() {
+        objHomePage.clickFillingButton(); // вышли из булок
+        objHomePage.checkBunIsNotSelected();
         objHomePage.clickBunButton();
-        String newBreadText = objHomePage.getBunText();
-        assertThat(newBreadText, is("Булки"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WebDriverConfig.WAIT_SECONDS_TIMEOUT));
+        objHomePage.getAndCheckAttributeValueIfTabBunsSelected();
     }
 
     @Test
-    @DisplayName("Таб 'Соусы'")
-    public void sauceTest() {
+    @DisplayName("Проверка перехода в раздел 'Соусы'")
+    public void sauceSelectedTest() {
+        objHomePage.checkSauceIsNotSelected();
         objHomePage.clickSauceButton();
-        String newSauceText = objHomePage.getSauceText();
-        assertThat(newSauceText, is("Соусы"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WebDriverConfig.WAIT_SECONDS_TIMEOUT));
+        objHomePage.getAndCheckAttributeValueIfTabSauceSelected();
     }
 
     @Test
-    @DisplayName("Таб 'Начинки'")
-    public void fillingTest() {
+    @DisplayName("Проверка перехода в раздел 'Начинки'")
+    public void fillingSelectedTest() {
+        objHomePage.checkFillingIsNotSelected();
         objHomePage.clickFillingButton();
-        String newFillingText = objHomePage.getFillingText();
-        assertThat(newFillingText, is("Начинки"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WebDriverConfig.WAIT_SECONDS_TIMEOUT));
+        objHomePage.getAndCheckAttributeValueIfTabFillingsSelected();
     }
 
     @After
